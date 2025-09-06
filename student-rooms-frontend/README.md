@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# 🎓 Student Rooms Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A comprehensive React frontend for a collaborative study platform where students can join rooms, share notes, ask doubts, and communicate in real-time.
 
 ## Available Scripts
 
