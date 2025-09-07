@@ -3,8 +3,8 @@ import api from './api';
 export const roomsService = {
   async getRooms() {
     try {
-      const response = await api.get('/rooms');
-      return response.data;
+  const response = await api.get('/rooms');
+  return response.data.rooms;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to fetch rooms');
     }

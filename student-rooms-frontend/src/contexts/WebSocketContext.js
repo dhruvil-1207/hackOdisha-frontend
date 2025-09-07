@@ -89,7 +89,9 @@ export const WebSocketProvider = ({ children }) => {
     dispatch({ type: 'WS_CONNECTING' });
 
     try {
-      const wsUrl = `ws://localhost:8001/ws?token=${token}`;
+      const baseWsUrl = process.env.REACT_APP_WEBSOCKET_URL || 'ws://localhost:8001/ws';
+      // Append token as query param
+      const wsUrl = `${baseWsUrl}?token=${token}`;
       const socket = new WebSocket(wsUrl);
 
       socket.onopen = () => {
