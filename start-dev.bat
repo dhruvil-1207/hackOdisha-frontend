@@ -1,0 +1,26 @@
+@echo off
+echo Starting Student Rooms Application...
+echo.
+
+echo Starting Backend Server...
+start "Backend Server" cmd /k "cd student-rooms-nodejs-backend && npm start"
+
+echo Waiting for backend to start...
+timeout /t 3 /nobreak > nul
+
+echo WebSocket Server is integrated with the main backend...
+
+echo Waiting for websocket to start...
+timeout /t 2 /nobreak > nul
+
+echo Starting Frontend Development Server...
+start "Frontend Server" cmd /k "cd student-rooms-frontend && npm start"
+
+echo.
+echo All servers are starting...
+echo Backend: http://localhost:8000
+echo WebSocket: ws://localhost:8001
+echo Frontend: http://localhost:3000
+echo.
+echo Press any key to close this window...
+pause > nul
