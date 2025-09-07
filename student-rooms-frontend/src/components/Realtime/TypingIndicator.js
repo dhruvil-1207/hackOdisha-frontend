@@ -27,3 +27,4 @@ const TypingIndicator = ({ users = [], className = '' }) => {
 };
 
 export default TypingIndicator;
+

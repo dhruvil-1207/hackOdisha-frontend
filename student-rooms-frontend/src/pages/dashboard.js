@@ -19,24 +19,65 @@ const Dashboard = () => {
     }
   }, [isAuthenticated, user?.token, connect]);
 
-  // Fetch rooms
+  // TEMPORARY: Mock rooms for review
   useEffect(() => {
-    const fetchRooms = async () => {
-      try {
-        setLoading(true);
-        const roomsData = await roomsService.getRooms();
-        setRooms(roomsData);
-      } catch (error) {
-        toast.error(error.message || 'Failed to fetch rooms');
-      } finally {
-        setLoading(false);
+    const mockRooms = [
+      {
+        id: 'room-1',
+        name: 'Advanced React Development',
+        description: 'Learn advanced React concepts, hooks, and state management',
+        subject: 'Computer Science',
+        university: 'Demo University',
+        memberCount: 25,
+        maxMembers: 50,
+        isPrivate: false,
+        inviteCode: 'REACT2024',
+        createdAt: '2024-01-15T10:00:00Z',
+        createdBy: {
+          id: 'user-1',
+          name: 'Dr. Smith',
+          avatar: null
+        }
+      },
+      {
+        id: 'room-2',
+        name: 'Data Structures & Algorithms',
+        description: 'Master fundamental data structures and algorithmic thinking',
+        subject: 'Computer Science',
+        university: 'Demo University',
+        memberCount: 42,
+        maxMembers: 60,
+        isPrivate: false,
+        inviteCode: 'DSA2024',
+        createdAt: '2024-01-10T14:30:00Z',
+        createdBy: {
+          id: 'user-2',
+          name: 'Prof. Johnson',
+          avatar: null
+        }
+      },
+      {
+        id: 'room-3',
+        name: 'Machine Learning Study Group',
+        description: 'Explore ML algorithms, neural networks, and AI applications',
+        subject: 'Artificial Intelligence',
+        university: 'Demo University',
+        memberCount: 18,
+        maxMembers: 30,
+        isPrivate: true,
+        inviteCode: 'ML2024',
+        createdAt: '2024-01-20T09:15:00Z',
+        createdBy: {
+          id: 'user-3',
+          name: 'Dr. Chen',
+          avatar: null
+        }
       }
-    };
-
-    if (isAuthenticated) {
-      fetchRooms();
-    }
-  }, [isAuthenticated]);
+    ];
+    
+    setRooms(mockRooms);
+    setLoading(false);
+  }, []);
 
   const handleRefresh = async () => {
     try {

@@ -266,3 +266,4 @@ const CreateRoomModal = ({ isOpen, onClose, onRoomCreated }) => {
 };
 
 export default CreateRoomModal;
+

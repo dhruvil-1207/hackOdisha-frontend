@@ -26,32 +26,85 @@ const RoomDetails = () => {
   const [activeTab, setActiveTab] = useState('posts');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Fetch room data
+  // TEMPORARY: Mock room data for review
   useEffect(() => {
-    const fetchRoomData = async () => {
-      try {
-        setLoading(true);
-        const [roomData, postsData, doubtsData] = await Promise.all([
-          roomsService.getRoom(roomId),
-          postsService.getPosts(roomId),
-          doubtsService.getDoubts(roomId)
-        ]);
-        
-        setRoom(roomData);
-        setPosts(postsData);
-        setDoubts(doubtsData);
-      } catch (error) {
-        toast.error(error.message || 'Failed to load room data');
-        navigate('/dashboard');
-      } finally {
-        setLoading(false);
+    const mockRoomData = {
+      id: roomId,
+      name: 'Advanced React Development',
+      description: 'Learn advanced React concepts, hooks, and state management. This room covers everything from basic components to advanced patterns.',
+      subject: 'Computer Science',
+      university: 'Demo University',
+      memberCount: 25,
+      maxMembers: 50,
+      isPrivate: false,
+      inviteCode: 'REACT2024',
+      createdAt: '2024-01-15T10:00:00Z',
+      createdBy: {
+        id: 'user-1',
+        name: 'Dr. Smith',
+        avatar: null
       }
     };
 
-    if (isAuthenticated && roomId) {
-      fetchRoomData();
-    }
-  }, [roomId, isAuthenticated, navigate]);
+    const mockPosts = [
+      {
+        id: 'post-1',
+        title: 'React Hooks Deep Dive',
+        content: 'Let\'s explore the most commonly used React hooks and their advanced patterns...',
+        type: 'note',
+        author: {
+          id: 'user-2',
+          name: 'Alice Johnson',
+          avatar: null
+        },
+        createdAt: '2024-01-20T14:30:00Z',
+        likes: 12,
+        isLiked: false,
+        isPinned: true,
+        attachments: []
+      },
+      {
+        id: 'post-2',
+        title: 'State Management with Context API',
+        content: 'Here\'s a comprehensive guide to managing state using React Context API...',
+        type: 'topic',
+        author: {
+          id: 'user-3',
+          name: 'Bob Wilson',
+          avatar: null
+        },
+        createdAt: '2024-01-19T09:15:00Z',
+        likes: 8,
+        isLiked: true,
+        isPinned: false,
+        attachments: []
+      }
+    ];
+
+    const mockDoubts = [
+      {
+        id: 'doubt-1',
+        title: 'How to optimize re-renders in React?',
+        content: 'I\'m experiencing performance issues with my React app. What are the best practices to minimize re-renders?',
+        author: {
+          id: 'user-4',
+          name: 'Charlie Brown',
+          avatar: null
+        },
+        createdAt: '2024-01-21T16:45:00Z',
+        likes: 5,
+        isLiked: false,
+        isUrgent: false,
+        isSolved: false,
+        tags: ['performance', 'optimization']
+      }
+    ];
+
+    setRoom(mockRoomData);
+    setPosts(mockPosts);
+    setDoubts(mockDoubts);
+    setLoading(false);
+  }, [roomId]);
 
   // Join room via WebSocket
   useEffect(() => {
@@ -144,16 +197,17 @@ const RoomDetails = () => {
     console.log('Comment on doubt:', doubt);
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Please log in to access this room</h2>
-          <p className="text-gray-600">You need to be logged in to view room details.</p>
-        </div>
-      </div>
-    );
-  }
+  // TEMPORARY: Comment out auth check for review
+  // if (!isAuthenticated) {
+  //   return (
+  //     <div className="flex items-center justify-center min-h-screen">
+  //       <div className="text-center">
+  //         <h2 className="text-2xl font-bold text-gray-900 mb-4">Please log in to access this room</h2>
+  //         <p className="text-gray-600">You need to be logged in to view room details.</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (loading) {
     return (

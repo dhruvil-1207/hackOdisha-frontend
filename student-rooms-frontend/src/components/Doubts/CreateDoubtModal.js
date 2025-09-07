@@ -256,3 +256,4 @@ const CreateDoubtModal = ({ isOpen, onClose, onDoubtCreated, roomId }) => {
 };
 
 export default CreateDoubtModal;
+

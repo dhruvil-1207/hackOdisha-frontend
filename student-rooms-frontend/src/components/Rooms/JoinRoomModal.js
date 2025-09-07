@@ -177,3 +177,4 @@ const JoinRoomModal = ({ isOpen, onClose, onRoomJoined }) => {
 };
 
 export default JoinRoomModal;
+

@@ -156,3 +156,4 @@ const RoomCard = ({ room, showActions = false, onJoin, onLeave, onDelete }) => {
 };
 
 export default RoomCard;
+

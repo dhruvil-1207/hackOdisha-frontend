@@ -53,3 +53,4 @@ const OnlineUsers = ({ users = [], maxDisplay = 5, className = '' }) => {
 };
 
 export default OnlineUsers;
+

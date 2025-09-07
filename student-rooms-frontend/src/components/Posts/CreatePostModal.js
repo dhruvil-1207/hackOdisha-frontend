@@ -298,3 +298,4 @@ const CreatePostModal = ({ isOpen, onClose, onPostCreated, roomId }) => {
 };
 
 export default CreatePostModal;
+

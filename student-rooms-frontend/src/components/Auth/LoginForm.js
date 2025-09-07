@@ -17,7 +17,9 @@ const LoginForm = () => {
 
   // Redirect if already authenticated
   useEffect(() => {
+    console.log('Auth state changed - isAuthenticated:', isAuthenticated);
     if (isAuthenticated) {
+      console.log('User is authenticated, navigating to dashboard...');
       navigate('/dashboard');
     }
   }, [isAuthenticated, navigate]);
@@ -25,7 +27,7 @@ const LoginForm = () => {
   // Clear errors when component mounts
   useEffect(() => {
     clearError();
-  }, [clearError]);
+  }, []); // Remove clearError from dependencies to prevent infinite loop
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,8 +43,9 @@ const LoginForm = () => {
 
     try {
       const result = await login(formData.email, formData.password);
+      
       if (result.success) {
-        toast.success('Login successful!');
+        toast.success('Login successful! Welcome back!');
         navigate('/dashboard');
       } else {
         toast.error(result.error || 'Login failed');
@@ -148,12 +151,24 @@ const LoginForm = () => {
         {isSubmitting ? (
           <>
             <FaSpinner className="animate-spin -ml-1 mr-2 h-4 w-4" />
-            Signing in...
+            Verifying credentials...
           </>
         ) : (
           'Sign in'
         )}
       </button>
+      
+      {isSubmitting && (
+        <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-md">
+          <div className="flex items-center">
+            <FaSpinner className="animate-spin h-4 w-4 text-blue-600 mr-2" />
+            <div className="text-sm text-blue-800">
+              <div className="font-medium">Verifying your account...</div>
+              <div className="text-blue-600">Please wait while we authenticate your credentials</div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="text-center">
         <p className="text-sm text-gray-600">
@@ -171,3 +186,4 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+

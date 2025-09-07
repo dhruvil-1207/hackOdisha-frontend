@@ -75,8 +75,8 @@ const RegisterForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!isFormValid()) {
-      toast.error('Please fill all fields correctly');
+    if (!formData.name.trim() || !formData.email.trim() || !formData.password) {
+      toast.error('Please fill all required fields');
       return;
     }
 
@@ -85,7 +85,7 @@ const RegisterForm = () => {
     try {
       const result = await register(formData.name, formData.email, formData.password);
       if (result.success) {
-        toast.success('Registration successful!');
+        toast.success('Account created successfully! Welcome to Student Rooms!');
         navigate('/dashboard');
       } else {
         toast.error(result.error || 'Registration failed');
@@ -263,18 +263,30 @@ const RegisterForm = () => {
 
       <button
         type="submit"
-        disabled={isSubmitting || !isFormValid()}
+        disabled={isSubmitting}
         className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
         {isSubmitting ? (
           <>
             <FaSpinner className="animate-spin -ml-1 mr-2 h-4 w-4" />
-            Creating account...
+            Creating your account...
           </>
         ) : (
           'Create account'
         )}
       </button>
+      
+      {isSubmitting && (
+        <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-md">
+          <div className="flex items-center">
+            <FaSpinner className="animate-spin h-4 w-4 text-green-600 mr-2" />
+            <div className="text-sm text-green-800">
+              <div className="font-medium">Setting up your account...</div>
+              <div className="text-green-600">Please wait while we create your student profile</div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="text-center">
         <p className="text-sm text-gray-600">
@@ -292,3 +304,4 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
+

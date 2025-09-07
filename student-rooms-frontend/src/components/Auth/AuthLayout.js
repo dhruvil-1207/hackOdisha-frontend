@@ -39,3 +39,4 @@ const AuthLayout = ({ children, title, subtitle }) => {
 };
 
 export default AuthLayout;
+

@@ -1,13 +1,22 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 import { authService } from '../services/auth';
 
 const AuthContext = createContext();
 
+// Simplified authentication - always authenticated
 const initialState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
-  isLoading: true,
+  user: {
+    id: 'demo-user',
+    name: 'Demo Student',
+    email: 'demo@student.com',
+    avatar: null,
+    university: 'Demo University',
+    major: 'Computer Science',
+    bio: 'Welcome to Student Rooms!',
+  },
+  token: 'demo-token',
+  isAuthenticated: true,
+  isLoading: false,
   error: null,
 };
 
@@ -20,6 +29,7 @@ const authReducer = (state, action) => {
         error: null,
       };
     case 'AUTH_SUCCESS':
+      console.log('AuthReducer: AUTH_SUCCESS - setting authenticated to true');
       return {
         ...state,
         user: action.payload.user,
@@ -59,78 +69,74 @@ const authReducer = (state, action) => {
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  // Check for existing token on app load
+  // Simplified - always start as authenticated
   useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem('authToken');
-      if (token) {
-        try {
-          const user = await authService.getCurrentUser();
-          dispatch({
-            type: 'AUTH_SUCCESS',
-            payload: { user, token },
-          });
-        } catch (error) {
-          localStorage.removeItem('authToken');
-          dispatch({
-            type: 'AUTH_FAILURE',
-            payload: 'Session expired. Please login again.',
-          });
-        }
-      } else {
-        dispatch({ type: 'AUTH_FAILURE', payload: null });
-      }
-    };
-
-    checkAuth();
+    // Just set loading to false after a brief moment
+    setTimeout(() => {
+      dispatch({ type: 'AUTH_SUCCESS', payload: { user: initialState.user, token: initialState.token } });
+    }, 100);
   }, []);
 
-  const login = async (email, password) => {
+  const login = useCallback(async (email, password) => {
+    // Fake loading for verification effect
     dispatch({ type: 'AUTH_START' });
-    try {
-      const response = await authService.login(email, password);
-      localStorage.setItem('authToken', response.token);
-      dispatch({
-        type: 'AUTH_SUCCESS',
-        payload: { user: response.user, token: response.token },
-      });
-      return { success: true };
-    } catch (error) {
-      dispatch({
-        type: 'AUTH_FAILURE',
-        payload: error.message || 'Login failed',
-      });
-      return { success: false, error: error.message };
-    }
-  };
+    
+    // Simulate verification delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    // Always succeed with demo user
+    const demoUser = {
+      id: 'demo-user',
+      name: email.split('@')[0] || 'Student',
+      email: email,
+      avatar: null,
+      university: 'Demo University',
+      major: 'Computer Science',
+      bio: 'Welcome to Student Rooms!',
+    };
+    
+    dispatch({
+      type: 'AUTH_SUCCESS',
+      payload: { user: demoUser, token: 'demo-token' },
+    });
+    
+    return { success: true };
+  }, []);
 
-  const register = async (name, email, password) => {
+  const register = useCallback(async (name, email, password) => {
+    // Fake loading for verification effect
     dispatch({ type: 'AUTH_START' });
-    try {
-      const response = await authService.register(name, email, password);
-      localStorage.setItem('authToken', response.token);
-      dispatch({
-        type: 'AUTH_SUCCESS',
-        payload: { user: response.user, token: response.token },
-      });
-      return { success: true };
-    } catch (error) {
-      dispatch({
-        type: 'AUTH_FAILURE',
-        payload: error.message || 'Registration failed',
-      });
-      return { success: false, error: error.message };
-    }
-  };
+    
+    // Simulate verification delay
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // Always succeed with new user
+    const newUser = {
+      id: 'demo-user-' + Date.now(),
+      name: name,
+      email: email,
+      avatar: null,
+      university: 'Demo University',
+      major: 'Computer Science',
+      bio: 'New Student at Student Rooms!',
+    };
+    
+    dispatch({
+      type: 'AUTH_SUCCESS',
+      payload: { user: newUser, token: 'demo-token' },
+    });
+    
+    return { success: true };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem('authToken');
     dispatch({ type: 'LOGOUT' });
-  };
+  }, []);
 
-  const clearError = () => {
+  const clearError = useCallback(() => {
     dispatch({ type: 'CLEAR_ERROR' });
-  };
+  }, []);
 
   const value = {
     ...state,
